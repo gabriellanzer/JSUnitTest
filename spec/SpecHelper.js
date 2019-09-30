@@ -1,12 +1,11 @@
 beforeEach(function () {
   jasmine.addMatchers({
-    toBePlaying: function () {
+    vectorEqual: function () {
       return {
-        compare: function (actual, expected) {
-          var player = actual;
-
+        compare: function (actual, x, y) {
           return {
-            pass: player.currentlyPlayingSong === expected && player.isPlaying
+            pass: actual.isEqual(new Vec2(x, y)),
+            message: `Expected ${actual.toString()} to be equal to (${x},${y}).`
           };
         }
       };

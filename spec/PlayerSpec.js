@@ -1,58 +1,62 @@
 describe("Player", function() {
   var player;
-  var song;
 
   beforeEach(function() {
     player = new Player();
-    song = new Song();
   });
 
-  it("should be able to play a Song", function() {
-    player.play(song);
-    expect(player.currentlyPlayingSong).toEqual(song);
-
-    //demonstrates use of custom matcher
-    expect(player).toBePlaying(song);
-  });
-
-  describe("when song has been paused", function() {
-    beforeEach(function() {
-      player.play(song);
-      player.pause();
+  describe("testing HP", function() {
+    it("should take damage", function() {
+      const currentHealth = player.hp;
+      player.takeDamage(50);
+      expect(player.hp).toEqual(currentHealth - 50);
     });
 
-    it("should indicate that the song is currently paused", function() {
-      expect(player.isPlaying).toBeFalsy();
-
-      // demonstrates use of 'not' with a custom matcher
-      expect(player).not.toBePlaying(song);
+    it("should take damage from negative input", function() {
+      const currentHealth = player.hp;
+      player.takeDamage(-50);
+      expect(player.hp).toEqual(currentHealth - 50);
     });
 
-    it("should be possible to resume", function() {
-      player.resume();
-      expect(player.isPlaying).toBeTruthy();
-      expect(player.currentlyPlayingSong).toEqual(song);
+    it("hp should NOT go below 0", function() {
+      player.takeDamage(player.hp + 1);
+      expect(player.hp).toEqual(0);
     });
   });
 
-  // demonstrates use of spies to intercept and test method calls
-  it("tells the current song if the user has made it a favorite", function() {
-    spyOn(song, 'persistFavoriteStatus');
+  describe("testing movement", function() {
+    it("should change movement correctly", function() {
+      const playerVel = player.velocity;
+      const newDirection = new Vec2(0, 1);
+      player.changeMovement(newDirection);
 
-    player.play(song);
-    player.makeFavorite();
-
-    expect(song.persistFavoriteStatus).toHaveBeenCalledWith(true);
-  });
-
-  //demonstrates use of expected exceptions
-  describe("#resume", function() {
-    it("should throw an exception if song is already playing", function() {
-      player.play(song);
-
-      expect(function() {
-        player.resume();
-      }).toThrowError("song is already playing");
+      expect(player.movement).toEqual(
+        new Vec2(newDirection.x * playerVel, newDirection.y * playerVel)
+      );
     });
   });
+
+  describe("testing update", function() {
+    it("update should change position according to movement", function() {
+      const playerMovement = player.movement;
+      const oldPosition = new Vec2(player.position.x, player.position.y);
+
+      player.update();
+
+      expect(player.position).vectorEqual(
+          oldPosition.x + playerMovement.x,
+          oldPosition.y + playerMovement.y
+      );
+    });
+
+    it("should NOT update position when HP is equal or below 0", function() {
+      const oldPosition = new Vec2(player.position.x, player.position.y);
+
+      player.takeDamage(player.hp);
+      player.update();
+
+      expect(player.position).toEqual(oldPosition);
+    });
+  });
+
 });
