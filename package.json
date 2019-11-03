@@ -1,0 +1,30 @@
+{
+  "name": "jsunittest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabriellanzer/JSUnitTest.git"
+  },
+  "keywords": [
+    "Jasmin",
+    "Sinon",
+    "Unit-test"
+  ],
+  "author": "Gabriel Lanzer & Rafael de Freitas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gabriellanzer/JSUnitTest/issues"
+  },
+  "homepage": "https://github.com/gabriellanzer/JSUnitTest#readme",
+  "dependencies": {
+    "sinon": "^7.5.0"
+  }
+}
